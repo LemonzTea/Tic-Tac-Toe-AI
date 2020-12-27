@@ -138,8 +138,7 @@ def winner(board):
         for i in range(len(board)):
             # print(f"{i},{i}, topleft")
             if board[i][i] != player:
-                diagonal_fromTopLeft = False
-                
+                diagonal_fromTopLeft = False      
 
         # Check Bottom Left to Top Right
         for col in reversed(range(len(board))):
@@ -148,7 +147,6 @@ def winner(board):
             if board[row][col] != player:
                 diagonal_fromBottomLeft = False
 
-        
         # If any return true, player has won
         if diagonal_fromBottomLeft or diagonal_fromTopLeft:
             return True
@@ -177,7 +175,7 @@ def terminal(board):
 
     # If there is a winner
     if winner(board) is not None:
-        return True;
+        return True
     
     # If there is a no winner
     xCount = 0
@@ -195,7 +193,6 @@ def terminal(board):
         return True
     else:
         return False
-
 
 
 def utility(board):
@@ -231,7 +228,7 @@ def minimax(board):
             # if the best option for maximizer is > best option for beta
             # no need to look at other actions
             if alpha > beta:
-                break;
+                break
         
         return score
 
@@ -243,7 +240,7 @@ def minimax(board):
         score = 999 
         for action in actions(board):
             score = min(score, MAX_VALUE(result(board, action), alpha, beta))
-            beta = min (beta, score)
+            beta = min(beta, score)
 
             # if the best option for minimizer is < best option for alpha
             # no need to look at other actions
@@ -252,22 +249,29 @@ def minimax(board):
         
         return score
     
+    # Get the current Plyer
     currentPlayer = player(board)
+
+    # Create a List of Nodes to check for the best option
     nodeList = []
     if currentPlayer == X:
+        # Add possible actions to the current board into the nodeList
         for action in actions(board):
             nodeList.append(Node(board, action, MIN_VALUE(result(board, action), -999, 999)))
 
         bestNode = nodeList[0]
+        # Check and Returns Node with the best score
         for node in nodeList:
             if node.score > bestNode.score:
                 bestNode = node
         return bestNode.action   
     else:
+        # Add possible actions to the current board into the nodeList
         for action in actions(board):
             nodeList.append(Node(board, action, MAX_VALUE(result(board, action), -999, 999)))
         
         bestNode = nodeList[0]
+        # Check and Returns Node with the best score
         for node in nodeList:
             if node.score < bestNode.score:
                 bestNode = node
